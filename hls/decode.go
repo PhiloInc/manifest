@@ -195,6 +195,8 @@ func (p *MediaPlaylist) Parse(reader io.Reader) error {
 			p.StartPoint, buf.Err = decodeStartPoint(line[index+1 : size])
 
 		// Cases below this point refers to tags that effect segments, when we reach a line with no leading #, we've reached the end of a segment definition.
+		case line[0:index] == "#EXT-X-DISCONTINUITY":
+			segment.Discontinuity = true
 		case line[0:index] == "#EXT-X-KEY":
 			key := decodeKey(line[index+1:size], false)
 			key.mediaPlaylist = p
