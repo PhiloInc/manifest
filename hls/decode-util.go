@@ -270,7 +270,7 @@ func splitParams(line string) map[string]string {
 func stringsIndex(line string, char string) int {
 	index := strings.Index(line, char)
 	if index == -1 {
-		index = 0
+		index = len(line)
 	}
 	return index
 }
