@@ -250,9 +250,11 @@ func (s *Segment) writeSegmentTags(buf *manifest.BufWrapper, previousSegment *Se
 		}
 		buf.WriteValidString(s.Discontinuity, "#EXT-X-DISCONTINUITY\n")
 
-		s.DateRange.writeDateRange(buf)
-		if buf.Err != nil {
-			return
+		for _, dateRange := range s.DateRanges {
+			dateRange.writeDateRange(buf)
+			if buf.Err != nil {
+				return
+			}
 		}
 
 		if s.Inf == nil {

@@ -183,11 +183,13 @@ func TestGenerateMediaPlaylist(t *testing.T) {
 		Byterange: &Byterange{Length: 6000, Offset: &offset},
 		Keys:      []*Key{&Key{Method: "sample-aes", URI: "keyuri"}},
 		Map:       &Map{URI: "mapuri"},
-		DateRange: &DateRange{ID: "test",
-			StartDate:        time.Now(),
-			EndDate:          time.Now().Add(1 * time.Hour),
-			SCTE35:           &SCTE35{Type: "in", Value: "blablabla"},
-			XClientAttribute: []string{"X-THIS-TAG=TEST", "X-THIS-OTHER-TAG=TESTING"}},
+		DateRanges: DateRanges{
+			&DateRange{
+				ID:               "test",
+				StartDate:        time.Now(),
+				EndDate:          time.Now().Add(1 * time.Hour),
+				SCTE35:           &SCTE35{Type: "in", Value: "blablabla"},
+				XClientAttribute: []string{"X-THIS-TAG=TEST", "X-THIS-OTHER-TAG=TESTING"}}},
 	}
 
 	p := NewMediaPlaylist(7)

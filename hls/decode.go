@@ -209,7 +209,11 @@ func (p *MediaPlaylist) Parse(reader io.Reader) error {
 		case line[0:index] == "#EXT-X-PROGRAM-DATE-TIME":
 			segment.ProgramDateTime, buf.Err = decodeDateTime(line[index+1 : size])
 		case line[0:index] == "#EXT-X-DATERANGE":
-			segment.DateRange, buf.Err = decodeDateRange(line[index+1 : size])
+			var dateRange *DateRange
+			dateRange, buf.Err = decodeDateRange(line[index+1 : size])
+			if buf.Err == nil {
+				segment.DateRanges = append(segment.DateRanges, dateRange)
+			}
 		case line[0:index] == "#EXT-X-BYTERANGE":
 			segment.Byterange, buf.Err = decodeByterange(line[index+1 : size])
 		case line[0:index] == "#EXTINF":

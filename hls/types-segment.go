@@ -16,7 +16,7 @@ type Segment struct {
 	Keys            []*Key
 	Map             *Map
 	ProgramDateTime time.Time //Represents tag #EXT-X-PROGRAM-DATE-TIME
-	DateRange       *DateRange
+	DateRanges      DateRanges
 
 	mediaPlaylist *MediaPlaylist // MediaPlaylist is included to be used internally for resolving relative resource locations
 }
@@ -208,6 +208,8 @@ type DateRange struct {
 	EndOnNext        bool      //Optional. Possible Value: YES. Indicates the end of the current date range is equal to the start date of the following range of the samePROGRAM-DATE-TIME class.
 	SCTE35           *SCTE35
 }
+
+type DateRanges []*DateRange
 
 //SCTE35 represents a DateRange attribute SCTE35-OUT, SCTE35-IN or SCTE35-CMD
 type SCTE35 struct {

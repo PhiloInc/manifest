@@ -160,8 +160,8 @@ func TestReadMediaPlaylistFile(t *testing.T) {
 		}
 		sd, _ := time.Parse(time.RFC3339Nano, "2010-02-19T14:54:23.031+08:00")
 		dr := &DateRange{ID: "6FFF00", StartDate: sd, SCTE35: &SCTE35{Type: "OUT", Value: "0xFC002F0000000000FF0"}}
-		if !reflect.DeepEqual(p.Segments[0].DateRange, dr) {
-			t.Errorf("Expected DateRange to be %v, but got %v", dr, p.Segments[0].DateRange)
+		if !reflect.DeepEqual(p.Segments[0].DateRanges[0], dr) {
+			t.Errorf("Expected DateRange to be %v, but got %v", dr, p.Segments[0].DateRanges[0])
 		}
 		c := p.MediaSequence
 		for i := range p.Segments {
@@ -186,11 +186,13 @@ func TestReadMediaPlaylist(t *testing.T) {
 		Byterange: &Byterange{Length: 6000, Offset: &offset},
 		Keys:      []*Key{&Key{Method: "sample-aes", URI: "keyuri"}, &Key{Method: "sample-aes", URI: "secondkeyuri"}},
 		Map:       &Map{URI: "mapuri"},
-		DateRange: &DateRange{ID: "TEST",
-			StartDate:        pt,
-			EndDate:          pt.Add(1 * time.Hour),
-			SCTE35:           &SCTE35{Type: "IN", Value: "bla"},
-			XClientAttribute: []string{"X-THIS-TAG=TEST", "X-THIS-OTHER-TAG=TESTING"}},
+		DateRanges: DateRanges{
+			&DateRange{
+				ID:               "TEST",
+				StartDate:        pt,
+				EndDate:          pt.Add(1 * time.Hour),
+				SCTE35:           &SCTE35{Type: "IN", Value: "bla"},
+				XClientAttribute: []string{"X-THIS-TAG=TEST", "X-THIS-OTHER-TAG=TESTING"}}},
 	}
 
 	seg2 := &Segment{
@@ -202,7 +204,8 @@ func TestReadMediaPlaylist(t *testing.T) {
 		Byterange: &Byterange{Length: 4000},
 		Keys:      []*Key{&Key{Method: "sample-aes", URI: "keyuri"}},
 		Map:       &Map{URI: "map2"},
-		DateRange: &DateRange{ID: "test", StartDate: pt, Duration: &duration},
+		DateRanges: DateRanges{
+			&DateRange{ID: "test", StartDate: pt, Duration: &duration}},
 	}
 
 	seg3 := &Segment{
