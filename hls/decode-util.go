@@ -116,14 +116,13 @@ func decodeSessionData(line string) *SessionData {
 func decodeInf(line string) (*Inf, error) {
 	var err error
 	i := &Inf{}
-	index := strings.Index(line, ",")
-	if index == -1 {
-		return nil, fmt.Errorf("no comma was found when decoding #EXTINF: %s", line)
+	parts := strings.SplitN(line, ",", 2)
+	if len(parts) > 1 {
+		i.Title = parts[1]
 	}
-	if i.Duration, err = strconv.ParseFloat(line[0:index], 64); err != nil {
-		return nil, err
+	if i.Duration, err = strconv.ParseFloat(parts[0], 64); err != nil {
+		return nil, fmt.Errorf("failed to parse duration #EXTINF: %s", line)
 	}
-	i.Title = line[index+1 : len(line)]
 	return i, err
 }
 
